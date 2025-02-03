@@ -18,7 +18,7 @@ create-environment:
 
 # Function that executes given arguments within virtual environment
 define execute_in_env
-	(source $(VENV)/bin/activate && $1)
+	(source venv/bin/activate && $1)
 endef
 
 # Install dependencies
