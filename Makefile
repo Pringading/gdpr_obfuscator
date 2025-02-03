@@ -2,6 +2,7 @@ PROJECT_NAME = gdpr
 PYTHON_INTERPRETER=python
 VENV=venv
 PIP=pip
+SHELL := /bin/bash
 
 # Create python interpreter environment
 create-environment:
