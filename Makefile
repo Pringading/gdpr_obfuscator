@@ -1,5 +1,7 @@
 PROJECT_NAME = gdpr-obfuscator
 PYTHON_INTERPRETER=python
+WD=$(shell pwd)
+PYTHONPATH=${WD}
 VENV=venv
 PIP=pip
 SHELL := /bin/bash
