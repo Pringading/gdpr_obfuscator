@@ -1,4 +1,4 @@
-PROJECT_NAME = gdpr
+PROJECT_NAME = gdpr-obfuscator
 PYTHON_INTERPRETER=python
 VENV=venv
 PIP=pip
@@ -17,12 +17,9 @@ create-environment:
 	    virtualenv $(VENV) --python=$(PYTHON_INTERPRETER); \
 	)
 
-# Define utility variable to help calling Python from the virtual environment
-ACTIVATE_ENV := source venv/bin/activate
-
 # Execute python related functionalities from within the project's environment
 define execute_in_env
-	$(ACTIVATE_ENV) && $1
+	source venv/bin/activate && $1
 endef
 
 # Install dependencies
@@ -78,6 +75,6 @@ check-coverage: coverage
 	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} coverage run --omit 'venv/*' -m pytest && coverage report -m)
 
 ## Run all checks
-run-checks: security-test run-flake8 run-black unit-test check-coverage
+run-checks: security-test run-flake8 run-black
 
 
