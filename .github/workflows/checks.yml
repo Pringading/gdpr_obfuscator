@@ -15,4 +15,5 @@ jobs:
           python-version: '3.11'
 
       - name: Run Tests
+        shell: bash
         run: make run-checks
