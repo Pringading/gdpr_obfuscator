@@ -1,0 +1,21 @@
+name: gdpr-obfuscator
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-checks:
+    name: Run Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Tests
+        run: make run-checks
