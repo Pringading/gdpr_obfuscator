@@ -16,9 +16,12 @@ create-environment:
 	    virtualenv $(VENV) --python=$(PYTHON_INTERPRETER); \
 	)
 
-# Function that executes given arguments within virtual environment
+# Define utility variable to help calling Python from the virtual environment
+ACTIVATE_ENV := source venv/bin/activate
+
+# Execute python related functionalities from within the project's environment
 define execute_in_env
-	(source venv/bin/activate && $1)
+	$(ACTIVATE_ENV) && $1
 endef
 
 # Install dependencies
