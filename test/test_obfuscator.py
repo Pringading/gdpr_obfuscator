@@ -9,4 +9,3 @@ class TestAccessS3CSV:
         test_path = 's3://test-bucket/students.csv'
         result = access_csv(test_path)
         assert isinstance(result, dict)
-        
