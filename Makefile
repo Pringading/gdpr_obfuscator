@@ -75,6 +75,6 @@ check-coverage: coverage
 	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} coverage run --omit 'venv/*' -m pytest && coverage report -m)
 
 ## Run all checks
-run-checks: security-test run-flake8 run-black
+run-checks: security-test run-flake8 run-black unit-test coverage
 
 
