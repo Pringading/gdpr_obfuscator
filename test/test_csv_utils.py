@@ -82,7 +82,12 @@ class TestListToCSVStreamingObject:
         result = list_to_csv_streaming_object(test_data)
         assert isinstance(result, StringIO)
 
-    @pytest.mark.skip
     @pytest.mark.it('Outputted streaming object contains expected data')
     def test_object_contains_expected_data(self):
-        pass
+        test_data = [
+            {"name": "***", "email": "***", "message": "hello"},
+            {"name": "***", "email": "***", "message": "world"},
+        ]
+        result = list_to_csv_streaming_object(test_data)
+        reader = DictReader(result)
+        assert list(reader) == test_data

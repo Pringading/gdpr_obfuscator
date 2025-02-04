@@ -23,4 +23,10 @@ def obfuscate_fields(rows: list[dict], fields: list[str]) -> list[dict]:
 
 def list_to_csv_streaming_object(data: list[str]) -> StringIO:
     buffer = StringIO()
+    fieldnames = list(data[0].keys())
+    writer = DictWriter(buffer, fieldnames=fieldnames)
+    writer.writeheader()
+    for row in data:
+        writer.writerow(row)
+    buffer.seek(0) # goes to the start of StringIO object to read contents
     return buffer
