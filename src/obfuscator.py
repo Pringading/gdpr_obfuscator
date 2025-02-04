@@ -9,6 +9,31 @@ from src.utils.csv_utils import (
 
 
 def obfuscator(json_str: str) -> None:
+    """Obfuscates file specified in json_str and saves as new file.
+
+    Args: json_str(json string) with following keys:
+        "file_to_obfuscate": s3 path to the file to be obfuscated.
+        "pii_fields": fields to be obfuscated
+
+    Accesses file_to_obfuscate and saves it on obfuscated/ key in the original
+    bucket.
+
+    Example:
+        when invoked with the following json string:
+        {
+            "file_to_obfuscate": "s3://my_ingestion_bucket/new_data/file1.csv",
+            "pii_fields": ["name", "email_address"]
+        }
+
+        new file will be saved here:
+            "s3://my_ingestion_bucket/obfuscated/new_data/file1.csv"
+
+        in the new file all data on 'name' and 'email' fields will appear as:
+            ***
+
+        fields not mentioned will be identical.
+    """
+
     request = json.loads(json_str)
     bucket, key = get_bucket_and_key_from_string(request["file_to_obfuscate"])
     obj_body = get_s3_object(bucket, key)
@@ -56,7 +81,14 @@ def get_s3_object(bucket: str, key: str) -> str:
 
 
 def save_streaming_obj_to_s3(obj: StringIO, bucket: str, key: str) -> None:
-    bytes_obj = BytesIO(obj.getvalue().encode('utf-8'))
+    """Saves streaming object as a file in S3 bucket.
+
+    Args:
+        obj (StringIO): Streaming object with data to be written to S3.
+        bucket (str): name of bucket to be written to
+        key (str): name of the key to save the file to."""
+
+    bytes_obj = BytesIO(obj.getvalue().encode('utf-8'))  # convert to Byte obj
     client = boto3.client('s3')
     client.put_object(
         Bucket=bucket,
