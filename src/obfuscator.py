@@ -1,14 +1,14 @@
-import boto3
-from io import StringIO
-from csv import DictReader
+def obfuscator(json_str: str) -> None:
+    pass
 
-def access_csv(bucket: str, key: str) -> str:
-    client = boto3.client('s3')
-    s3_object = client.get_object(
-        Bucket = bucket,
-        Key = key,
-    )
-    body = s3_object['Body'].read()
-    buffer = StringIO(body.decode('utf-8'))
-    reader = DictReader(buffer)
-    return list(reader)
+
+def get_bucket_and_key_from_string(filename: str) -> tuple[str]:
+    pass
+
+
+def access_s3_object(bucket: str, key: str) -> str:
+    pass
+
+
+def save_streaming_obj_to_s3(obj, bucket: str, key: str) -> None:
+    pass
