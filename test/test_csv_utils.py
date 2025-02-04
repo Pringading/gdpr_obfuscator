@@ -10,8 +10,15 @@ from src.utils.csv_utils import (
 
 
 class TestObjectBodyToList:
+    """Tests object_body_to_list function in src/utils/csv_utils.py"""
+
     @pytest.mark.it('Returns list')
     def test_returns_list(self, mock_s3_bucket):
+        """Testing return value is a list.
+
+        uses mock_s3_bucket fixture and accesses students.csv object inside
+        test-bucket."""
+
         test_bucket = 'test-bucket'
         test_key = 'students.csv'
         test_object = get_s3_object(test_bucket, test_key)
@@ -20,6 +27,12 @@ class TestObjectBodyToList:
 
     @pytest.mark.it('Returns expected data')
     def test_returns_expected_data(self, mock_s3_bucket):
+        """Testing return value contains same data as original file.
+
+        uses mock_s3_bucket fixture and accesses students.csv object inside
+        test-bucket. Compares data in students.csv file uploaded to
+        test-bucket with local version of the same file."""
+
         test_bucket = 'test-bucket'
         test_key = 'students.csv'
         test_object = get_s3_object(test_bucket, test_key)
@@ -31,8 +44,12 @@ class TestObjectBodyToList:
 
 
 class TestObfuscateFields:
+    """Tests obfuscate_fields function in src/utils/csv_utils.py"""
+
     @pytest.mark.it('Returns list of dictioaries')
     def test_returns_list_of_dicts(self):
+        """Tesing return value is a list of dictionaries."""
+
         test_list = [
             {"name": "name 1"},
             {"name": "name 2"}
@@ -45,6 +62,8 @@ class TestObfuscateFields:
 
     @pytest.mark.it('Obfuscates dictionaries with one field')
     def test_obfuscate_1_field(self):
+        """Testing obfuscates dictionary with only one field"""
+
         test_list = [
             {"name": "name 1"},
             {"name": "name 2"}
@@ -59,6 +78,9 @@ class TestObfuscateFields:
 
     @pytest.mark.it('Obfuscates dictionaries with multiple fields')
     def test_obfuscates_multiple_fields(self):
+        """Testing obfuscation of multiple fields. Only fields in list should
+        be obfuscated."""
+
         test_list = [
             {"name": "name 1", "email": "1@email.com", "message": "hello"},
             {"name": "name 2", "email": "2@email.com", "message": "world"},
@@ -73,8 +95,12 @@ class TestObfuscateFields:
 
 
 class TestListToCSVStreamingObject:
+    """Tests save_streaming_obj_to_s3 function in src/utils/csv_utils.py"""
+
     @pytest.mark.it('Returns streaming object')
     def test_returns_streaming_object(self):
+        """Tesing return value is a StringIO streaming object."""
+
         test_data = [
             {"name": "***", "email": "***", "message": "hello"},
             {"name": "***", "email": "***", "message": "world"},
@@ -84,6 +110,9 @@ class TestListToCSVStreamingObject:
 
     @pytest.mark.it('Outputted streaming object contains expected data')
     def test_object_contains_expected_data(self):
+        """Testing returned object contains same data as originally given
+        as an argument."""
+
         test_data = [
             {"name": "***", "email": "***", "message": "hello"},
             {"name": "***", "email": "***", "message": "world"},

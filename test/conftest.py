@@ -16,6 +16,8 @@ def aws_credentials():
 
 @pytest.fixture
 def mock_s3_bucket(aws_credentials):
+    """Creates a mock S3 bucket test-bucket & uploads csv file students.csv"""
+
     with mock_aws():
         client = boto3.client("s3")
         client.create_bucket(
@@ -32,6 +34,10 @@ def mock_s3_bucket(aws_credentials):
 
 @pytest.fixture
 def s3_bucket_1MB(aws_credentials):
+    """Creates mock S3 bucket test-bucket & larger csv file movie.csv
+
+    IMDB_Movies_Dataset.csv is from Kaggle and is 2.2MB unzipped"""
+
     with mock_aws():
         client = boto3.client("s3")
         client.create_bucket(
