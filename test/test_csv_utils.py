@@ -1,9 +1,11 @@
 import pytest
-from src.obfuscator import get_s3_object
 from csv import DictReader
+from io import StringIO
+from src.obfuscator import get_s3_object
 from src.utils.csv_utils import (
     object_body_to_list,
     obfuscate_fields,
+    list_to_csv_streaming_object,
 )
 
 
@@ -61,7 +63,7 @@ class TestObfuscateFields:
             {"name": "name 1", "email": "1@email.com", "message": "hello"},
             {"name": "name 2", "email": "2@email.com", "message": "world"},
         ]
-        expected = test_list = [
+        expected = [
             {"name": "***", "email": "***", "message": "hello"},
             {"name": "***", "email": "***", "message": "world"},
         ]
@@ -71,4 +73,16 @@ class TestObfuscateFields:
 
 
 class TestListToCSVStreamingObject:
-    pass
+    @pytest.mark.it('Returns streaming object')
+    def test_returns_streaming_object(self):
+        test_data = [
+            {"name": "***", "email": "***", "message": "hello"},
+            {"name": "***", "email": "***", "message": "world"},
+        ]
+        result = list_to_csv_streaming_object(test_data)
+        assert isinstance(result, StringIO)
+
+    @pytest.mark.skip
+    @pytest.mark.it('Outputted streaming object contains expected data')
+    def test_object_contains_expected_data(self):
+        pass

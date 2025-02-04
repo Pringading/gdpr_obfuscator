@@ -1,6 +1,5 @@
-import boto3
 from io import StringIO
-from csv import DictReader
+from csv import DictReader, DictWriter
 
 
 def object_body_to_list(body: str) -> list[dict]:
@@ -22,5 +21,6 @@ def obfuscate_fields(rows: list[dict], fields: list[str]) -> list[dict]:
     return obfuscated_list
 
 
-def list_to_csv_streaming_object():
-    pass
+def list_to_csv_streaming_object(data: list[str]) -> StringIO:
+    buffer = StringIO()
+    return buffer
