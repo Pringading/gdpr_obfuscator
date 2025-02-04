@@ -1,9 +1,12 @@
 import pytest
+import boto3
 from csv import DictReader
 from io import StringIO
+from src.utils.csv_utils import list_to_csv_streaming_object
 from src.obfuscator import (
     get_bucket_and_key_from_string,
     get_s3_object,
+    save_streaming_obj_to_s3,
 )
 
 
@@ -52,10 +55,22 @@ class TestAccessS3Object:
 class TestSaveStreamingObjToS3:
     """Testing save_streaming_obj_to_s3 function in src/obfuscator.py"""
 
-    @pytest.mark.skip
     @pytest.mark.it('Adds file to s3 bucket at given key')
-    def test_adds_file(self):
-        pass
+    def test_adds_file(self, mock_s3_bucket):
+        test_bucket = "test-bucket"
+        test_key = "obfuscated_students.csv"
+        test_data = [
+            {"name": "***", "email": "***", "message": "hello"},
+            {"name": "***", "email": "***", "message": "world"},
+        ]
+        test_object = list_to_csv_streaming_object(test_data)
+        save_streaming_obj_to_s3(test_object, test_bucket, test_key)
+        client = boto3.client('s3')
+        result = client.list_objects_v2(Bucket=test_bucket)
+        keys = [obj['Key'] for obj in result['Contents']]
+        print(keys)
+        assert test_key in keys
+
 
     @pytest.mark.skip
     @pytest.mark.it('File body contains expected data')

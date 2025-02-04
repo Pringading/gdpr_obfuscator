@@ -1,4 +1,5 @@
 import boto3
+from io import StringIO, BytesIO
 
 
 def obfuscator(json_str: str) -> None:
@@ -42,5 +43,11 @@ def get_s3_object(bucket: str, key: str) -> str:
     return body.decode('utf-8')
 
 
-def save_streaming_obj_to_s3(obj, bucket: str, key: str) -> None:
-    pass
+def save_streaming_obj_to_s3(obj: StringIO, bucket: str, key: str) -> None:
+    bytes_obj = BytesIO(obj.getvalue().encode('utf-8'))
+    client = boto3.client('s3')
+    client.put_object(
+        Bucket=bucket,
+        Body=bytes_obj,
+        Key=key,
+    )
