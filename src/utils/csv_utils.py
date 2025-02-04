@@ -10,7 +10,16 @@ def object_body_to_list(body: str) -> list[dict]:
 
 
 def obfuscate_fields(rows: list[dict], fields: list[str]) -> list[dict]:
-    return rows
+    obfuscated_list = []
+    for row in rows:
+        new_dict = {}
+        for key, value in row.items():
+            if key in fields:
+                new_dict[key] = "***"
+            else:
+                new_dict[key] = value
+        obfuscated_list.append(new_dict)
+    return obfuscated_list
 
 
 def list_to_csv_streaming_object():

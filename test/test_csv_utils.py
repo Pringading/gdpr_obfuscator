@@ -41,25 +41,33 @@ class TestObfuscateFields:
         for row in result:
             assert isinstance(row, dict)
 
-    @pytest.mark.skip
     @pytest.mark.it('Obfuscates dictionaries with one field')
     def test_obfuscate_1_field(self):
         test_list = [
             {"name": "name 1"},
             {"name": "name 2"}
         ]
+        expected = [
+            {"name": "***"},
+            {"name": "***"}
+        ]
         test_fields = ["name"]
-        obfuscate_fields(test_list, test_fields)
+        result = obfuscate_fields(test_list, test_fields)
+        assert result == expected
 
-    @pytest.mark.skip
     @pytest.mark.it('Obfuscates dictionaries with multiple fields')
     def test_obfuscates_multiple_fields(self):
         test_list = [
             {"name": "name 1", "email": "1@email.com", "message": "hello"},
             {"name": "name 2", "email": "2@email.com", "message": "world"},
         ]
+        expected = test_list = [
+            {"name": "***", "email": "***", "message": "hello"},
+            {"name": "***", "email": "***", "message": "world"},
+        ]
         test_fields = ["name", "email"]
-        obfuscate_fields(test_list, test_fields)
+        result = obfuscate_fields(test_list, test_fields)
+        assert result == expected
 
 
 class TestListToCSVStreamingObject:
