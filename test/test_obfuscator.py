@@ -1,9 +1,15 @@
 import pytest
 import boto3
+import json
+from time import time
 from csv import DictReader
 from io import StringIO
-from src.utils.csv_utils import list_to_csv_streaming_object
+from src.utils.csv_utils import (
+    list_to_csv_streaming_object,
+    object_body_to_list,
+)
 from src.obfuscator import (
+    obfuscator,
     get_bucket_and_key_from_string,
     get_s3_object,
     save_streaming_obj_to_s3,
@@ -11,7 +17,41 @@ from src.obfuscator import (
 
 
 class TestObfuscator:
-    pass
+    @pytest.mark.it('Adds obfuscated file to S3 Bucket')
+    def test_adds_obfuscated_file(self, mock_s3_bucket):
+        test_request = {
+            "file_to_obfuscate": "s3://test-bucket/students.csv",
+            "pii_fields": ["name", "email_address"]
+        }
+        test_bucket = "test-bucket"
+        obfuscated_key = "obfuscated/students.csv"
+        json_request = json.dumps(test_request)
+        obfuscator(json_request)
+        result_body = get_s3_object(test_bucket, obfuscated_key)
+        result_list = object_body_to_list(result_body)
+        for row in result_list:
+            assert row["name"] == "***"
+            assert row["email_address"] == "***"
+
+    @pytest.mark.it('processes 1MB file in less than 1 minute')
+    def test_takes_less_than_1_min(self, s3_bucket_1MB):
+        test_request = {
+            "file_to_obfuscate": "s3://test-bucket/movies.csv",
+            "pii_fields": ["Title", "Director", "Writer"]
+        }
+        test_bucket = "test-bucket"
+        obfuscated_key = "obfuscated/movies.csv"
+        json_request = json.dumps(test_request)
+        start = time()
+        obfuscator(json_request)
+        result_body = get_s3_object(test_bucket, obfuscated_key)
+        result_list = object_body_to_list(result_body)
+        for row in result_list:
+            assert row["Title"] == "***"
+            assert row["Director"] == "***"
+            assert row["Writer"] == "***"
+        end = time()
+        assert end - start < 60
 
 
 class TestGetBucketAndKeyFromString:
@@ -68,11 +108,18 @@ class TestSaveStreamingObjToS3:
         client = boto3.client('s3')
         result = client.list_objects_v2(Bucket=test_bucket)
         keys = [obj['Key'] for obj in result['Contents']]
-        print(keys)
         assert test_key in keys
 
-
-    @pytest.mark.skip
     @pytest.mark.it('File body contains expected data')
-    def test_file_has_expected_contents(self):
-        pass
+    def test_file_has_expected_contents(self, mock_s3_bucket):
+        test_bucket = "test-bucket"
+        test_key = "obfuscated_students.csv"
+        test_data = [
+            {"name": "***", "email": "***", "message": "hello"},
+            {"name": "***", "email": "***", "message": "world"},
+        ]
+        test_object = list_to_csv_streaming_object(test_data)
+        save_streaming_obj_to_s3(test_object, test_bucket, test_key)
+        result_body = get_s3_object(test_bucket, test_key)
+        result_list = object_body_to_list(result_body)
+        assert result_list == test_data

@@ -28,5 +28,5 @@ def list_to_csv_streaming_object(data: list[str]) -> StringIO:
     writer.writeheader()
     for row in data:
         writer.writerow(row)
-    buffer.seek(0) # goes to the start of StringIO object to read contents
+    buffer.seek(0)  # goes to the start of StringIO object to read contents
     return buffer

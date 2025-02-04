@@ -1,9 +1,21 @@
 import boto3
+import json
 from io import StringIO, BytesIO
+from src.utils.csv_utils import (
+    object_body_to_list,
+    obfuscate_fields,
+    list_to_csv_streaming_object,
+)
 
 
 def obfuscator(json_str: str) -> None:
-    pass
+    request = json.loads(json_str)
+    bucket, key = get_bucket_and_key_from_string(request["file_to_obfuscate"])
+    obj_body = get_s3_object(bucket, key)
+    data = object_body_to_list(obj_body)
+    obfuscated_data = obfuscate_fields(data, request['pii_fields'])
+    obfuscated_obj = list_to_csv_streaming_object(obfuscated_data)
+    save_streaming_obj_to_s3(obfuscated_obj, bucket, "obfuscated/" + key)
 
 
 def get_bucket_and_key_from_string(filename: str) -> tuple[str]:
