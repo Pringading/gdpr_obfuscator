@@ -12,6 +12,8 @@ class TestObfuscator:
 
 
 class TestGetBucketAndKeyFromString:
+    """Testing get_bucket_and_key_from_string function in src/obfuscator.py"""
+
     @pytest.mark.it('Obtains bucket and key name from s3 address.')
     def test_returns_bucket_name(self):
         test_file = "s3://my_ingestion_bucket/new_data/file1.csv"
@@ -22,8 +24,12 @@ class TestGetBucketAndKeyFromString:
 
 
 class TestAccessS3Object:
+    """Testing get_s3_object function in src/obfuscator.py"""
+
     @pytest.mark.it('Get S3 object returns string')
     def test_returns_str(self, mock_s3_bucket):
+        """Uses mock s3 bucket defined in test/conftest.py"""
+
         test_bucket = 'test-bucket'
         test_key = 'students.csv'
         result = get_s3_object(test_bucket, test_key)
@@ -31,6 +37,8 @@ class TestAccessS3Object:
 
     @pytest.mark.it('Get S3 object gets expected file contents')
     def test_returns_expected_file(self, mock_s3_bucket):
+        """Uses mock s3 bucket defined in test/conftest.py"""
+
         test_bucket = 'test-bucket'
         test_key = 'students.csv'
         with open("test/test_data/students.csv") as c:
@@ -42,4 +50,14 @@ class TestAccessS3Object:
 
 
 class TestSaveStreamingObjToS3:
-    pass
+    """Testing save_streaming_obj_to_s3 function in src/obfuscator.py"""
+
+    @pytest.mark.skip
+    @pytest.mark.it('Adds file to s3 bucket at given key')
+    def test_adds_file(self):
+        pass
+
+    @pytest.mark.skip
+    @pytest.mark.it('File body contains expected data')
+    def test_file_has_expected_contents(self):
+        pass
