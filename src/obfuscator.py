@@ -1,7 +1,7 @@
 import boto3
 import json
 from io import StringIO, BytesIO
-from src.utils.csv_utils import (
+from .utils.csv_utils import (
     object_body_to_list,
     obfuscate_fields,
     list_to_csv_streaming_object,
