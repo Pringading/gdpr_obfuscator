@@ -1,8 +1,9 @@
-from setuptools import setup, find_packages
+from setuptools import setup
+
 setup(
-    name="gdpr_obfuscator",
+    name="obfuscator",
     version="0.1.0",
-    packages=find_packages(),
+    packages=["obfuscator"],
     install_requires=[
         'boto3==1.36.12',
         'botocore==1.36.12',

@@ -58,4 +58,14 @@ check-coverage: dev-setup
 ## Run all checks
 run-checks: security-test run-flake8 unit-test check-coverage
 
+### Remove packages
+remove-packages:
+	rm -r build
+	rm -r dist
+	rm -r obfuscator.egg-info
+
+## Create package
+create-package: dev-setup
+	$(call execute_in_env, python setup.py sdist bdist_wheel)
+
 

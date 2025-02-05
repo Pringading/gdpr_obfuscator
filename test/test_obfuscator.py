@@ -4,11 +4,11 @@ import json
 from time import time
 from csv import DictReader
 from io import StringIO
-from src.utils.csv_utils import (
+from obfuscator.csv_utils import (
     list_to_csv_streaming_object,
     object_body_to_list,
 )
-from src.obfuscator import (
+from obfuscator.main import (
     obfuscator,
     get_bucket_and_key_from_string,
     get_s3_object,

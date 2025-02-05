@@ -1,8 +1,8 @@
 import pytest
 from csv import DictReader
 from io import StringIO
-from src.obfuscator import get_s3_object
-from src.utils.csv_utils import (
+from obfuscator.main import get_s3_object
+from obfuscator.csv_utils import (
     object_body_to_list,
     obfuscate_fields,
     list_to_csv_streaming_object,
