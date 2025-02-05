@@ -28,28 +28,7 @@ endef
 requirements: create-environment
 	$(call execute_in_env, $(PIP) install -r ./requirements.txt)
 
-# # CHECKS
-# ## Install Bandit - finds common security issues
-# bandit: create-environment
-# 	$(call execute_in_env, $(PIP) install bandit)
-
-# ## Install safety
-# safety: create-environment
-# 	$(call execute_in_env, $(PIP) install safety)
-
-# ## Install flake8
-# flake8: create-environment
-# 	$(call execute_in_env, $(PIP) install flake8)
-
-# ## Install black
-# black: create-environment
-# 	$(call execute_in_env, $(PIP) install black)
-
-# ## Install coverage
-# coverage: create-environment
-# 	$(call execute_in_env, $(PIP) install coverage)
-
-## Set up dev requirements (bandit, safety, black)
+# Install tools for testing and checking
 dev-setup: create-environment
 	$(call execute_in_env, $(PIP) install -r ./requirements-dev.txt)
 
