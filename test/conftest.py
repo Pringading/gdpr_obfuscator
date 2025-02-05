@@ -25,9 +25,9 @@ def mock_s3_bucket(aws_credentials):
             CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
         )
         client.upload_file(
-            Filename='test/test_data/students.csv',
-            Bucket='test-bucket',
-            Key='students.csv',
+            Filename="test/test_data/students.csv",
+            Bucket="test-bucket",
+            Key="students.csv",
         )
         yield client
 
@@ -45,8 +45,8 @@ def s3_bucket_1MB(aws_credentials):
             CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
         )
         client.upload_file(
-            Filename='test/test_data/IMDB_Movies_Dataset.csv',
-            Bucket='test-bucket',
-            Key='movies.csv',
+            Filename="test/test_data/IMDB_Movies_Dataset.csv",
+            Bucket="test-bucket",
+            Key="movies.csv",
         )
         yield client

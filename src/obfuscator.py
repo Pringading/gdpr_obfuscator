@@ -38,7 +38,7 @@ def obfuscator(json_str: str) -> None:
     bucket, key = get_bucket_and_key_from_string(request["file_to_obfuscate"])
     obj_body = get_s3_object(bucket, key)
     data = object_body_to_list(obj_body)
-    obfuscated_data = obfuscate_fields(data, request['pii_fields'])
+    obfuscated_data = obfuscate_fields(data, request["pii_fields"])
     obfuscated_obj = list_to_csv_streaming_object(obfuscated_data)
     save_streaming_obj_to_s3(obfuscated_obj, bucket, "obfuscated/" + key)
 
@@ -57,7 +57,7 @@ def get_bucket_and_key_from_string(filename: str) -> tuple[str]:
         if filename[i] == "/":
             break
 
-    bucket = filename[5: i]
+    bucket = filename[5:i]
     key = filename[i + 1:]
     return bucket, key
 
@@ -71,13 +71,13 @@ def get_s3_object(bucket: str, key: str) -> str:
 
     Returns: Body of the given file in string format."""
 
-    client = boto3.client('s3')
+    client = boto3.client("s3")
     s3_object = client.get_object(
         Bucket=bucket,
         Key=key,
     )
-    body = s3_object['Body'].read()
-    return body.decode('utf-8')
+    body = s3_object["Body"].read()
+    return body.decode("utf-8")
 
 
 def save_streaming_obj_to_s3(obj: StringIO, bucket: str, key: str) -> None:
@@ -88,8 +88,8 @@ def save_streaming_obj_to_s3(obj: StringIO, bucket: str, key: str) -> None:
         bucket (str): name of bucket to be written to
         key (str): name of the key to save the file to."""
 
-    bytes_obj = BytesIO(obj.getvalue().encode('utf-8'))  # convert to Byte obj
-    client = boto3.client('s3')
+    bytes_obj = BytesIO(obj.getvalue().encode("utf-8"))  # convert to Byte obj
+    client = boto3.client("s3")
     client.put_object(
         Bucket=bucket,
         Body=bytes_obj,
