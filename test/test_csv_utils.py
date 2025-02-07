@@ -10,7 +10,7 @@ from obfuscator.csv_utils import (
 
 
 class TestObjectBodyToList:
-    """Tests object_body_to_list function in src/utils/csv_utils.py"""
+    """Tests object_body_to_list function in obfuscator/csv_utils.py"""
 
     @pytest.mark.it("Returns list")
     def test_returns_list(self, mock_s3_bucket):
@@ -44,7 +44,7 @@ class TestObjectBodyToList:
 
 
 class TestObfuscateFields:
-    """Tests obfuscate_fields function in src/utils/csv_utils.py"""
+    """Tests obfuscate_fields function in obfuscator/csv_utils.py"""
 
     @pytest.mark.it("Returns list of dictioaries")
     def test_returns_list_of_dicts(self):
@@ -86,7 +86,7 @@ class TestObfuscateFields:
 
 
 class TestListToCSVStreamingObject:
-    """Tests save_streaming_obj_to_s3 function in src/utils/csv_utils.py"""
+    """Tests save_streaming_obj_to_s3 function in obfuscator/csv_utils.py"""
 
     @pytest.mark.it("Returns streaming object")
     def test_returns_streaming_object(self):

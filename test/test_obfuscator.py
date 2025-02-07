@@ -17,7 +17,7 @@ from obfuscator.main import (
 
 
 class TestObfuscator:
-    """Integration tests for obfuscator function in src/obfuscator.py"""
+    """Integration tests for obfuscator function in obfuscator/main.py"""
 
     @pytest.mark.it("Returns BytesIO object")
     def test_returns_bytes_io_object(self, mock_s3_bucket):
@@ -82,7 +82,7 @@ class TestObfuscator:
 
 
 class TestGetBucketAndKeyFromString:
-    """Testing get_bucket_and_key_from_string function in src/obfuscator.py"""
+    """Testing get_bucket_and_key_from_string function in obfuscator/main.py"""
 
     @pytest.mark.it("Obtains bucket and key name from s3 address.")
     def test_returns_bucket_name(self):
@@ -96,7 +96,7 @@ class TestGetBucketAndKeyFromString:
 
 
 class TestAccessS3Object:
-    """Testing get_s3_object function in src/obfuscator.py"""
+    """Testing get_s3_object function in obfuscator/main.py"""
 
     @pytest.mark.it("Get S3 object returns string")
     def test_returns_str(self, mock_s3_bucket):
@@ -129,7 +129,7 @@ class TestAccessS3Object:
 
 
 class TestSaveStreamingObjToS3:
-    """Testing save_streaming_obj_to_s3 function in src/obfuscator.py"""
+    """Testing save_streaming_obj_to_s3 function in obfuscator/main.py"""
 
     @pytest.mark.it("Adds file to s3 bucket at given key")
     def test_adds_file(self, mock_s3_bucket):
