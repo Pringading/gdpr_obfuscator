@@ -111,7 +111,15 @@ class TestGetBucketAndKeyFromString:
         expected_bucket = "my_ingestion_bucket"
         expected_key = "new_data/file1.csv"
         result = get_bucket_and_key_from_string(test_file)
-        assert result == (expected_bucket, expected_key)
+        assert result[:2] == (expected_bucket, expected_key)
+
+    @pytest.mark.it("Obtains extension from s3 address.")
+    def test_returns_extension(self):
+        """Testing returns the extension from the given address."""
+
+        test_file = "s3://my_ingestion_bucket/new_data/file1.csv"
+        result = get_bucket_and_key_from_string(test_file)
+        assert result[2] == "csv"
 
     @pytest.mark.it('Throws error if filename does not start with S3://.')
     def test_throw_error_if_no_s3(self):

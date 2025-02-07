@@ -40,7 +40,7 @@ def obfuscator(json_str: str) -> BytesIO:
         appear as:
             ***
 
-        fields not mentioned will be identical.
+        fields not included will be identical.
     """
 
     request = json.loads(json_str)
@@ -50,7 +50,9 @@ def obfuscator(json_str: str) -> BytesIO:
     if 'pii_fields' not in request:
         raise NoPIIFields
 
-    bucket, key = get_bucket_and_key_from_string(request["file_to_obfuscate"])
+    bucket, key, _ = get_bucket_and_key_from_string(
+        request["file_to_obfuscate"]
+    )
     obj_body = get_s3_object(bucket, key)
     data = object_body_to_list(obj_body)
     obfuscated_data = obfuscate_fields(data, request["pii_fields"])
@@ -74,30 +76,31 @@ def get_bucket_and_key_from_string(filename: str) -> tuple[str]:
         raise InvalidFileToObfuscate
 
     # find where the keyname starts
-    for i in range(5, len(filename)):
-        if filename[i] == "/":
+    for key_start in range(5, len(filename)):
+        if filename[key_start] == '/':
             break
 
     # raise error if / not found so no keyname
-    if i == len(filename) - 1:
+    if key_start == len(filename) - 1:
         raise InvalidFileToObfuscate
 
-    bucket = filename[5:i]
-    key = filename[i + 1:]
+    # assign bucket & key variables
+    bucket = filename[5:key_start]
+    key = filename[key_start + 1:]
 
-    # find where the extension starts
-    j = len(filename) - 1
-    while j > i:
-        j -= 1
-        if filename[j] == ".":
+    # find where the file extension starts
+    ext_start = len(filename) - 1
+    while ext_start > key_start:
+        ext_start -= 1
+        if filename[ext_start] == '.':
             break
 
-    extension = filename[j:]
+    extension = filename[ext_start + 1:]
 
-    if extension not in ['.csv']:
+    if extension not in ['csv']:
         raise InvalidFileToObfuscate
 
-    return bucket, key
+    return bucket, key, extension
 
 
 def get_s3_object(bucket: str, key: str) -> str:
