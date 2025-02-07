@@ -14,7 +14,16 @@ def read_readme(readme: str) -> str:
 
 
 def replace_badge(contents: str, badge: str) -> str:
-    pass
+    print(badge)
+    REGEX = re.compile(
+        r'!\[Coverage Badge\]\(https:\/\/img\.shields\.io\/badge\/'
+        + r'coverage-\d{1,3}%25-[a-z]{3,20}\)'
+    )
+    found = REGEX.search(contents)
+    if found:
+        new_contents = REGEX.sub(badge, contents)
+        return new_contents
+    return contents + "\n" + badge
 
 
 def write_readme(readme: str, contents: str) -> None:

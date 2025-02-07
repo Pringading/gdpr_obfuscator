@@ -42,6 +42,40 @@ class TestReadReadme:
         assert result == expected
 
 
+class TestReplaceBadge:
+    @pytest.mark.it('If badge not found, adds badge to the end')
+    def test_adds_badge_if_not_found(self):
+        test_content = "here is some contents"
+        test_badge = "![Coverage Badge](https://img.shields.io/badge/coverage-20%25-red)"
+        result = replace_badge(test_content, test_badge)
+        assert test_badge in result
+    
+    @pytest.mark.it('If badge found,replaces existing badge')
+    def test_replaces_badge_found(self):
+        test_badge = (
+            "![Coverage Badge](https://img.shields.io/badge/"
+            + "coverage-92%25-forestgreen)"
+        )
+        test_content = (
+            "# test readme\n"
+            + "Some info about the project\n"
+            + "![Random Badge](https://img.shields.io/badge/random-blue)\n"
+            + "![Coverage Badge](https://img.shields.io/badge/"
+            + "coverage-20%25-red)\n"
+            + "Some more info."
+        )
+        expected = (
+            "# test readme\n"
+            + "Some info about the project\n"
+            + "![Random Badge](https://img.shields.io/badge/random-blue)\n"
+            + "![Coverage Badge](https://img.shields.io/badge/"
+            + "coverage-92%25-forestgreen)\n"
+            + "Some more info."
+        )
+        result = replace_badge(test_content, test_badge)
+        assert result == expected
+
+
 class TestWriteReadme:
     @pytest.mark.it('writes new content to readme')
     def test_writes_new_content_to_reademt(self, test_readme):
