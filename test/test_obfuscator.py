@@ -14,6 +14,10 @@ from obfuscator.main import (
     get_s3_object,
     save_streaming_obj_to_s3,
 )
+from obfuscator.exceptions import(
+    NoFileToObfuscate,
+    NoPIIFields
+)
 
 
 class TestObfuscator:
@@ -80,6 +84,20 @@ class TestObfuscator:
         end = time()
         assert end - start < 60
 
+    @pytest.mark.it('Throws NoFileToObfuscate error if field not provided')
+    def test_throws_no_file_error(self):
+        test_request = {"pii_fields": ["Title", "Director", "Writer"]}
+        json_request = json.dumps(test_request)
+        with pytest.raises(NoFileToObfuscate):
+            obfuscator(json_request)
+
+    @pytest.mark.it('Throws NoPIIFieods error if field not provided')
+    def test_throws_no_pii_error(self):
+        test_request = {"file_to_obfuscate": "s3://test-bucket/movies.csv"}
+        json_request = json.dumps(test_request)
+        with pytest.raises(NoPIIFields):
+            obfuscator(json_request)
+            
 
 class TestGetBucketAndKeyFromString:
     """Testing get_bucket_and_key_from_string function in obfuscator/main.py"""

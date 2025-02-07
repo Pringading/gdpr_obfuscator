@@ -6,6 +6,7 @@ from .csv_utils import (
     obfuscate_fields,
     list_to_csv_streaming_object,
 )
+from .exceptions import NoFileToObfuscate, NoPIIFields
 
 
 def hello():
@@ -39,6 +40,12 @@ def obfuscator(json_str: str) -> BytesIO:
     """
 
     request = json.loads(json_str)
+    if 'file_to_obfuscate' not in request:
+        raise NoFileToObfuscate
+    
+    if 'pii_fields' not in request:
+        raise NoPIIFields
+
     bucket, key = get_bucket_and_key_from_string(request["file_to_obfuscate"])
     obj_body = get_s3_object(bucket, key)
     data = object_body_to_list(obj_body)
