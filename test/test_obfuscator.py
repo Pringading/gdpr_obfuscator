@@ -92,7 +92,7 @@ class TestObfuscator:
         json_request = json.dumps(test_request)
         with pytest.raises(NoFileToObfuscate):
             obfuscator(json_request)
-    
+
     @pytest.mark.it('Logs error if file_to_obfuscate field not provided')
     def test_logs_no_file_error(self, caplog):
         expected_log = 'Unable to process. Please provide file_to_obfuscate'
