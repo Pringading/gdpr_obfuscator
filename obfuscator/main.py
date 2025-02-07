@@ -19,8 +19,7 @@ def obfuscator(json_str: str) -> BytesIO:
         "file_to_obfuscate": s3 path to the file to be obfuscated.
         "pii_fields": fields to be obfuscated
 
-    Accesses file_to_obfuscate and saves it on obfuscated/ key in the original
-    bucket.
+    Accesses file_to_obfuscate and returns obfuscated csv Bytes object.
 
     Example:
         when invoked with the following json string:
@@ -32,7 +31,8 @@ def obfuscator(json_str: str) -> BytesIO:
         new file will be saved here:
             "s3://my_ingestion_bucket/obfuscated/new_data/file1.csv"
 
-        in the new file all data on 'name' and 'email' fields will appear as:
+        in the returned object all data on 'name' and 'email' fields will 
+        appear as:
             ***
 
         fields not mentioned will be identical.
