@@ -17,8 +17,9 @@ def replace_badge(contents: str, badge: str) -> str:
     pass
 
 
-def write_readme(contents: str, file: str) -> None:
-    pass
+def write_readme(readme: str, contents: str) -> None:
+    with open(readme, 'w', encoding='utf-8') as f:
+        f.write(contents)
 
 
 def get_coverage_percentage():

@@ -43,7 +43,12 @@ class TestReadReadme:
 
 
 class TestWriteReadme:
-    pass
+    @pytest.mark.it('writes new content to readme')
+    def test_writes_new_content_to_reademt(self, test_readme):
+        test_contents = "hello world"
+        write_readme(test_readme, test_contents)
+        with open(test_readme, 'r', encoding='utf-8') as f:
+            assert f.read() == test_contents
 
 class TestGetBadgeMarkdown:
     @pytest.mark.it('Test returns expected markup when given an address')

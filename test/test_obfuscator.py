@@ -1,6 +1,7 @@
 import pytest
 import boto3
 import json
+import logging
 from time import time
 from csv import DictReader
 from io import StringIO, BytesIO
@@ -91,13 +92,26 @@ class TestObfuscator:
         json_request = json.dumps(test_request)
         with pytest.raises(NoFileToObfuscate):
             obfuscator(json_request)
+    
+    @pytest.mark.it('Logs error if file_to_obfuscate field not provided')
+    def test_logs_no_file_error(self, caplog):
+        expected_log = 'Unable to process. Please provide file_to_obfuscate'
+        test_request = {"pii_fields": ["Title", "Director", "Writer"]}
+        json_request = json.dumps(test_request)
+        with caplog.at_level(logging.ERROR):
+            with pytest.raises(NoFileToObfuscate):
+                obfuscator(json_request)
+        assert expected_log in caplog.text
 
-    @pytest.mark.it('Throws NoPIIFieods error if field not provided')
-    def test_throws_no_pii_error(self):
+    @pytest.mark.it('Logs error if pii_fields not provided')
+    def test_logs_no_pii_error(self, caplog):
+        expected_log = 'Unable to process. Please provide pii_fields'
         test_request = {"file_to_obfuscate": "s3://test-bucket/movies.csv"}
         json_request = json.dumps(test_request)
-        with pytest.raises(NoPIIFields):
-            obfuscator(json_request)
+        with caplog.at_level(logging.ERROR):
+            with pytest.raises(NoPIIFields):
+                obfuscator(json_request)
+        assert expected_log in caplog.text
 
 
 class TestGetBucketAndKeyFromString:

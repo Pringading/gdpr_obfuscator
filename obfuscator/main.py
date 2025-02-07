@@ -1,5 +1,6 @@
 import boto3
 import json
+import logging
 from io import StringIO, BytesIO
 from .csv_utils import (
     object_body_to_list,
@@ -12,6 +13,9 @@ from .exceptions import (
     NoPIIFields,
 )
 
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 def hello():
     print("hello!")
@@ -45,9 +49,11 @@ def obfuscator(json_str: str) -> BytesIO:
 
     request = json.loads(json_str)
     if 'file_to_obfuscate' not in request:
+        logger.error('Unable to process. Please provide file_to_obfuscate')
         raise NoFileToObfuscate
 
     if 'pii_fields' not in request:
+        logger.error('Unable to process. Please provide pii_fields')
         raise NoPIIFields
 
     bucket, key, _ = get_bucket_and_key_from_string(
@@ -73,6 +79,9 @@ def get_bucket_and_key_from_string(filename: str) -> tuple[str]:
 
     # raise error if not s3 location
     if filename[:5] != 's3://':
+        logger.error(
+            'Unable to process. file_to_obfuscate should start with s3://'
+        )
         raise InvalidFileToObfuscate
 
     # find where the keyname starts
@@ -82,6 +91,7 @@ def get_bucket_and_key_from_string(filename: str) -> tuple[str]:
 
     # raise error if / not found so no keyname
     if key_start == len(filename) - 1:
+        logging.error('Unable to process. Invalid file_to_obfuscate.')
         raise InvalidFileToObfuscate
 
     # assign bucket & key variables
@@ -95,9 +105,13 @@ def get_bucket_and_key_from_string(filename: str) -> tuple[str]:
         if filename[ext_start] == '.':
             break
 
-    extension = filename[ext_start + 1:]
-
+    extension = filename[ext_start + 1:].lower()
+    
     if extension not in ['csv']:
+        logging.error(
+            f'Unable to process. Files with the extension {extension}' +
+            ' are currently not supported.'
+        )
         raise InvalidFileToObfuscate
 
     return bucket, key, extension
