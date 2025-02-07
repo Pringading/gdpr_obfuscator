@@ -3,7 +3,7 @@ import boto3
 import json
 from time import time
 from csv import DictReader
-from io import StringIO
+from io import StringIO, BytesIO
 from obfuscator.csv_utils import (
     list_to_csv_streaming_object,
     object_body_to_list,
@@ -19,9 +19,9 @@ from obfuscator.main import (
 class TestObfuscator:
     """Integration tests for obfuscator function in src/obfuscator.py"""
 
-    @pytest.mark.it("Adds obfuscated file to S3 Bucket")
-    def test_adds_obfuscated_file(self, mock_s3_bucket):
-        """Tests that a new file is added to the bucket with obfuscated data
+    @pytest.mark.it("Returns BytesIO object")
+    def test_returns_bytes_io_object(self, mock_s3_bucket):
+        """Tests that BytesIO object is returned from function.
 
         Uses mock_s3_bucket fixture and students.csv object."""
 
@@ -29,15 +29,29 @@ class TestObfuscator:
             "file_to_obfuscate": "s3://test-bucket/students.csv",
             "pii_fields": ["name", "email_address"],
         }
-        test_bucket = "test-bucket"
-        obfuscated_key = "obfuscated/students.csv"
         json_request = json.dumps(test_request)
-        obfuscator(json_request)
+        result = obfuscator(json_request)
 
         # check file has been added at the new key in the bucket
-        result_body = get_s3_object(test_bucket, obfuscated_key)
-        result_list = object_body_to_list(result_body)
-        for row in result_list:
+        assert isinstance(result, BytesIO)
+
+    @pytest.mark.it("Returned object has obfuscated expected fields")
+    def test_fields_obfuscated(self, mock_s3_bucket):
+        """Tests that returned BytesIO object has obfuscated fields.
+
+        Uses mock_s3_bucket fixture and students.csv object."""
+
+        test_request = {
+            "file_to_obfuscate": "s3://test-bucket/students.csv",
+            "pii_fields": ["name", "email_address"],
+        }
+        json_request = json.dumps(test_request)
+        result = obfuscator(json_request)
+
+        # check file has been added at the new key in the bucket
+        buffer = StringIO(result.read().decode('utf-8'))
+        reader = DictReader(buffer)
+        for row in reader:
             assert row["name"] == "***"
             assert row["email_address"] == "***"
 
@@ -53,15 +67,13 @@ class TestObfuscator:
             "file_to_obfuscate": "s3://test-bucket/movies.csv",
             "pii_fields": ["Title", "Director", "Writer"],
         }
-        test_bucket = "test-bucket"
-        obfuscated_key = "obfuscated/movies.csv"
         json_request = json.dumps(test_request)
 
         start = time()
-        obfuscator(json_request)
-        result_body = get_s3_object(test_bucket, obfuscated_key)
-        result_list = object_body_to_list(result_body)
-        for row in result_list:
+        result = obfuscator(json_request)
+        buffer = StringIO(result.read().decode('utf-8'))
+        reader = DictReader(buffer)
+        for row in reader:
             assert row["Title"] == "***"
             assert row["Director"] == "***"
             assert row["Writer"] == "***"

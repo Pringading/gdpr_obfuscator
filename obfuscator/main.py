@@ -12,8 +12,8 @@ def hello():
     print("hello!")
 
 
-def obfuscator(json_str: str) -> None:
-    """Obfuscates file specified in json_str and saves as new file.
+def obfuscator(json_str: str) -> BytesIO:
+    """Obfuscates file specified in json_str and returns as a Bytes object.
 
     Args: json_str(json string) with following keys:
         "file_to_obfuscate": s3 path to the file to be obfuscated.
@@ -43,8 +43,9 @@ def obfuscator(json_str: str) -> None:
     obj_body = get_s3_object(bucket, key)
     data = object_body_to_list(obj_body)
     obfuscated_data = obfuscate_fields(data, request["pii_fields"])
-    obfuscated_obj = list_to_csv_streaming_object(obfuscated_data)
-    save_streaming_obj_to_s3(obfuscated_obj, bucket, "obfuscated/" + key)
+    obj = list_to_csv_streaming_object(obfuscated_data)
+    bytes_obj = BytesIO(obj.getvalue().encode("utf-8"))  # convert to Byte obj
+    return bytes_obj
 
 
 def get_bucket_and_key_from_string(filename: str) -> tuple[str]:
