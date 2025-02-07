@@ -104,10 +104,20 @@ class TestWriteReadme:
 
 
 class TestGetBadgeMarkdown:
-    @pytest.mark.it('Test returns expected markup when given an address')
+    @pytest.mark.it('Test returns expected markdown when given an address')
     def test_expected_markup(self):
         expected = (
             "![Coverage Badge](https://img.shields.io/badge/"
             + "coverage-20%25-red)"
         )
         assert get_badge_markdown(20) == expected
+    
+    @pytest.mark.it('Test returns expected colour based on percentage')
+    def test_expected_color(self):
+        assert 'red' in get_badge_markdown(25)
+        assert 'tomato' in get_badge_markdown(50)
+        assert 'orange' in get_badge_markdown(64)
+        assert 'yellow' in get_badge_markdown(74)
+        assert 'greenyellow' in get_badge_markdown(75)
+        assert 'green' in get_badge_markdown(80)
+        assert 'forestgreen' in get_badge_markdown(90)

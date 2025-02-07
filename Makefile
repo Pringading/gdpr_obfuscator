@@ -52,8 +52,9 @@ unit-test: requirements
 	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest -vv --testdox)
 
 ## Run the coverage check
-check-coverage: dev-setup
+check-coverage:
 	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} coverage run --omit 'venv/*' -m pytest && coverage report -m)
+	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} python -c 'from coverage_badge.badge import update_readme_badge; update_readme_badge()')
 
 ## Run all checks
 run-checks: security-test run-flake8 unit-test check-coverage
