@@ -41,11 +41,11 @@ security-test: dev-setup
 
 ## Run the black code check
 run-black: dev-setup
-	$(call execute_in_env, black  ./src/*.py ./test/*.py)
+	$(call execute_in_env, black  ./obfuscator/*.py ./test/*.py)
 
 ## Run the flake8 code check
 run-flake8: dev-setup
-	$(call execute_in_env, flake8  ./src/*.py ./test/*.py)
+	$(call execute_in_env, flake8  ./obfuscator/main.py ./obfuscator/csv_utils.py ./test/*.py)
 
 ## Run the unit tests
 unit-test: requirements
