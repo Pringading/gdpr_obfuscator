@@ -17,6 +17,7 @@ from .exceptions import (
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+
 def hello():
     print("hello!")
 
@@ -106,7 +107,7 @@ def get_bucket_and_key_from_string(filename: str) -> tuple[str]:
             break
 
     extension = filename[ext_start + 1:].lower()
-    
+
     if extension not in ['csv']:
         logging.error(
             f'Unable to process. Files with the extension {extension}' +

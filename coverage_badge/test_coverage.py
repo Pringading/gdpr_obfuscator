@@ -111,7 +111,7 @@ class TestGetBadgeMarkdown:
             + "coverage-20%25-red)"
         )
         assert get_badge_markdown(20) == expected
-    
+
     @pytest.mark.it('Test returns expected colour based on percentage')
     def test_expected_color(self):
         assert 'red' in get_badge_markdown(25)
