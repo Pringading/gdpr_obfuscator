@@ -6,7 +6,11 @@ from .csv_utils import (
     obfuscate_fields,
     list_to_csv_streaming_object,
 )
-from .exceptions import NoFileToObfuscate, NoPIIFields
+from .exceptions import (
+    NoFileToObfuscate,
+    InvalidFileToObfuscate,
+    NoPIIFields,
+)
 
 
 def hello():
@@ -32,7 +36,7 @@ def obfuscator(json_str: str) -> BytesIO:
         new file will be saved here:
             "s3://my_ingestion_bucket/obfuscated/new_data/file1.csv"
 
-        in the returned object all data on 'name' and 'email' fields will 
+        in the returned object all data on 'name' and 'email' fields will
         appear as:
             ***
 
@@ -42,7 +46,7 @@ def obfuscator(json_str: str) -> BytesIO:
     request = json.loads(json_str)
     if 'file_to_obfuscate' not in request:
         raise NoFileToObfuscate
-    
+
     if 'pii_fields' not in request:
         raise NoPIIFields
 
@@ -65,12 +69,34 @@ def get_bucket_and_key_from_string(filename: str) -> tuple[str]:
     Returns: bucket name and key name as a tuple.
         eg. 'my_ingestion_bucket', 'new_data/file1.csv'"""
 
+    # raise error if not s3 location
+    if filename[:5] != 's3://':
+        raise InvalidFileToObfuscate
+
+    # find where the keyname starts
     for i in range(5, len(filename)):
         if filename[i] == "/":
             break
 
+    # raise error if / not found so no keyname
+    if i == len(filename) - 1:
+        raise InvalidFileToObfuscate
+
     bucket = filename[5:i]
     key = filename[i + 1:]
+
+    # find where the extension starts
+    j = len(filename) - 1
+    while j > i:
+        j -= 1
+        if filename[j] == ".":
+            break
+
+    extension = filename[j:]
+
+    if extension not in ['.csv']:
+        raise InvalidFileToObfuscate
+
     return bucket, key
 
 

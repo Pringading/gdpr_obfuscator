@@ -14,9 +14,10 @@ from obfuscator.main import (
     get_s3_object,
     save_streaming_obj_to_s3,
 )
-from obfuscator.exceptions import(
+from obfuscator.exceptions import (
     NoFileToObfuscate,
-    NoPIIFields
+    InvalidFileToObfuscate,
+    NoPIIFields,
 )
 
 
@@ -97,7 +98,7 @@ class TestObfuscator:
         json_request = json.dumps(test_request)
         with pytest.raises(NoPIIFields):
             obfuscator(json_request)
-            
+
 
 class TestGetBucketAndKeyFromString:
     """Testing get_bucket_and_key_from_string function in obfuscator/main.py"""
@@ -111,6 +112,30 @@ class TestGetBucketAndKeyFromString:
         expected_key = "new_data/file1.csv"
         result = get_bucket_and_key_from_string(test_file)
         assert result == (expected_bucket, expected_key)
+
+    @pytest.mark.it('Throws error if filename does not start with S3://.')
+    def test_throw_error_if_no_s3(self):
+        """Testing throws error if not s3 location"""
+
+        test_file = "my_ingestion_bucket/new_data/file1.csv"
+        with pytest.raises(InvalidFileToObfuscate):
+            get_bucket_and_key_from_string(test_file)
+
+    @pytest.mark.it('Throws error if no / in filename')
+    def test_throw_error_if_no_keyname(self):
+        "Testing throws error if no key name"
+
+        test_file = "s3://my_ingestion_bucket"
+        with pytest.raises(InvalidFileToObfuscate):
+            get_bucket_and_key_from_string(test_file)
+
+    @pytest.mark.it('Throws error if unsupported file format')
+    def test_throw_error_if_unsupported_file(self):
+        "Testing throws error if not a valid file format"
+
+        test_file = "s3://my_ingestion_bucket/new_data/file1.txt"
+        with pytest.raises(InvalidFileToObfuscate):
+            get_bucket_and_key_from_string(test_file)
 
 
 class TestAccessS3Object:
