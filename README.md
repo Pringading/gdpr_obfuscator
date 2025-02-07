@@ -5,7 +5,7 @@ A general-purpose tool to process data being ingested to AWS and intercept perso
 
 [![gdpr-obfuscator](https://github.com/Pringading/gdpr_obfuscator/actions/workflows/checks.yml/badge.svg)](https://github.com/Pringading/gdpr_obfuscator/actions/workflows/checks.yml)
 
-![Coverage Badge](https://img.shields.io/badge/coverage-39%25-red)
+![Coverage Badge](https://img.shields.io/badge/coverage-98%25-forestgreen)
 
 ## Project Description
 An obfuscation tool that can be integrated as a library module into a Python codebase.
