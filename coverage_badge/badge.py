@@ -2,10 +2,12 @@ from coverage import coverage
 import re
 
 
-def update_readme_badge(readme: str="README.md"):
-    percentage = 20
+def update_readme_badge(readme: str = "README.md"):
+    percentage = get_coverage_percentage()
     badge = get_badge_markdown(percentage)
-    new_readme = ""
+    contents = read_readme(readme)
+    new_contents = replace_badge(contents, badge)
+    write_readme(readme, new_contents)
 
 
 def read_readme(readme: str) -> str:
@@ -31,14 +33,14 @@ def write_readme(readme: str, contents: str) -> None:
         f.write(contents)
 
 
-def get_coverage_percentage():
+def get_coverage_percentage() -> int:
     cov = coverage()
     cov.load()
     total = cov.report()
-    return total
+    return int(total)
 
 
-def get_badge_markdown(percentage: float) -> str:
+def get_badge_markdown(percentage: int) -> str:
     badge = "![Coverage Badge](https://img.shields.io/badge/coverage-"
     if percentage < 45:
         colour = "red"
