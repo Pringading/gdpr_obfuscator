@@ -1,4 +1,5 @@
 import pytest
+import logging
 from csv import DictReader
 from io import StringIO
 from obfuscator.main import get_s3_object
@@ -83,6 +84,60 @@ class TestObfuscateFields:
         test_fields = ["name", "email"]
         result = obfuscate_fields(test_list, test_fields)
         assert result == expected
+
+    @pytest.mark.it("Logs warning if given no data to obfuscate")
+    def test_obfuscate_fields_empty_list(self, caplog):
+        expected_log = 'No data found to obfuscate.'
+        with caplog.at_level(logging.WARNING):
+            obfuscate_fields([], [])
+        assert expected_log in caplog.text
+
+    @pytest.mark.it('Logs warning if given no fields to obfuscate')
+    def test_obfuscate_fields_empty_fields(self, caplog):
+        expected_log = 'No fields found to obfuscate'
+        test_list = [
+            {"name": "name 1", "email": "1@email.com", "message": "hello"},
+            {"name": "name 2", "email": "2@email.com", "message": "world"},
+        ]
+        with caplog.at_level(logging.WARNING):
+            obfuscate_fields(test_list, [])
+        assert expected_log in caplog.text
+
+    @pytest.mark.it('Logs warning if none of the given fields found in data')
+    def test_fields_not_found(self, caplog):
+        expected_log = 'No fields found to obfuscate'
+        test_fields = ['address', 'course']
+        test_list = [
+            {"name": "name 1", "email": "1@email.com", "message": "hello"},
+            {"name": "name 2", "email": "2@email.com", "message": "world"},
+        ]
+        with caplog.at_level(logging.WARNING):
+            obfuscate_fields(test_list, test_fields)
+        assert expected_log in caplog.text
+
+    @pytest.mark.it('Logs warning if some fo the given fields missing in data')
+    def test_logs_missing_fields(self, caplog):
+        expected_log = 'address, course fields not found in data.'
+        test_fields = ['address', 'course', 'name']
+        test_list = [
+            {"name": "name 1", "email": "1@email.com", "message": "hello"},
+            {"name": "name 2", "email": "2@email.com", "message": "world"},
+        ]
+        with caplog.at_level(logging.WARNING):
+            obfuscate_fields(test_list, test_fields)
+        assert expected_log in caplog.text
+
+    @pytest.mark.it('Logs info about which fields have been obfuscated')
+    def test_logs_info_about_obfuscated_fields(self, caplog):
+        expected_log = 'name, email fields have been successfully obfuscated'
+        test_fields = ['address', 'course', 'name', 'email']
+        test_list = [
+            {"name": "name 1", "email": "1@email.com", "message": "hello"},
+            {"name": "name 2", "email": "2@email.com", "message": "world"},
+        ]
+        with caplog.at_level(logging.INFO):
+            obfuscate_fields(test_list, test_fields)
+        assert expected_log in caplog.text
 
 
 class TestListToCSVStreamingObject:

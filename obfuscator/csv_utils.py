@@ -1,5 +1,10 @@
+import logging
 from io import StringIO
 from csv import DictReader, DictWriter
+
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def object_body_to_list(body: str) -> list[dict]:
@@ -25,6 +30,25 @@ def obfuscate_fields(data: list[dict], fields: list[str]) -> list[dict]:
     Returns: Identical dictionary with all values on given fields to be
     obfuscated equal to ***"""
 
+    # log warning and return if given no data to obfuscate
+    if len(data) == 0:
+        logger.warning('No data found to obfuscate.')
+        return []
+
+    # check which fields are present in given data
+    not_found = [field for field in fields if field not in data[0]]
+    found = [field for field in fields if field in data[0]]
+
+    # log warning if any of the fields are not in given data
+    if not_found:
+        logger.warning(', '.join(not_found) + ' fields not found in data.')
+
+    # log warning and return original data if no fields to obfuscate
+    if len(found) == 0:
+        logger.warning('No fields found to obfuscate')
+        return data
+
+    # obfuscate data
     obfuscated_list = []
     for row in data:
         new_dict = {}
@@ -34,6 +58,9 @@ def obfuscate_fields(data: list[dict], fields: list[str]) -> list[dict]:
             else:
                 new_dict[key] = value
         obfuscated_list.append(new_dict)
+
+    # log obfuscated fields & return obfuscated data
+    logger.info(', '.join(found) + ' fields have been successfully obfuscated')
     return obfuscated_list
 
 
