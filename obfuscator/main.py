@@ -49,6 +49,7 @@ def obfuscator(json_str: str) -> BytesIO:
     """
 
     request = json.loads(json_str)
+
     if 'file_to_obfuscate' not in request:
         logger.error('Unable to process. Please provide file_to_obfuscate')
         raise NoFileToObfuscate
@@ -90,7 +91,7 @@ def get_bucket_and_key_from_string(filename: str) -> tuple[str]:
         if filename[key_start] == '/':
             break
 
-    # raise error if / not found so no keyname
+    # raise error if '/' not found so no keyname
     if key_start == len(filename) - 1:
         logging.error('Unable to process. Invalid file_to_obfuscate.')
         raise InvalidFileToObfuscate

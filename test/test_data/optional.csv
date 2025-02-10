@@ -1,0 +1,4 @@
+student_id,name,course,cohort,graduation_date,email_address
+1234,,Software,,2024-03-31,email1@email.com
+2345,Person 2,Data,January 2024,2024-04-01,
+3456,Person 3,,January 2024,2024-04-02,email3@email.com

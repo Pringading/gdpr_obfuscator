@@ -50,3 +50,21 @@ def s3_bucket_1MB(aws_credentials):
             Key="movies.csv",
         )
         yield client
+
+
+@pytest.fixture
+def s3_optional_csv(aws_credentials):
+    """Creates a mock S3 bucket test-bucket & uploads csv file students.csv"""
+
+    with mock_aws():
+        client = boto3.client("s3")
+        client.create_bucket(
+            Bucket="test-bucket",
+            CreateBucketConfiguration={"LocationConstraint": "eu-west-2"},
+        )
+        client.upload_file(
+            Filename="test/test_data/optional.csv",
+            Bucket="test-bucket",
+            Key="optional.csv",
+        )
+        yield client

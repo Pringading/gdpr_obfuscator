@@ -61,6 +61,28 @@ class TestObfuscator:
             assert row["name"] == "***"
             assert row["email_address"] == "***"
 
+    @pytest.mark.it("Obfuscator still works when fields to obfuscate are " +
+                    "nullable")
+    def test_nullable_csv(self, s3_optional_csv):
+        """Tests that obfuscator can obfuscate fields with null values.
+
+        Uses s3_optional_csv fixture and optional.csv object. In this csv
+        some of the fields to obfuscate contain null values"""
+
+        test_request = {
+            "file_to_obfuscate": "s3://test-bucket/optional.csv",
+            "pii_fields": ["name", "email_address"],
+        }
+        json_request = json.dumps(test_request)
+        result = obfuscator(json_request)
+
+        # check file has been added at the new key in the bucket
+        buffer = StringIO(result.read().decode('utf-8'))
+        reader = DictReader(buffer)
+        for row in reader:
+            assert row["name"] == "***"
+            assert row["email_address"] == "***"
+
     @pytest.mark.it("processes 1MB file in less than 1 minute")
     def test_takes_less_than_1_min(self, s3_bucket_1MB):
         """Checks the obfuscator function processes 1MB file in < 1 minute
@@ -93,7 +115,7 @@ class TestObfuscator:
         with pytest.raises(NoFileToObfuscate):
             obfuscator(json_request)
 
-    @pytest.mark.it('Logs error if file_to_obfuscate field not provided')
+    @pytest.mark.it('Logs error if file_to_obfuscate not provided')
     def test_logs_no_file_error(self, caplog):
         expected_log = 'Unable to process. Please provide file_to_obfuscate'
         test_request = {"pii_fields": ["Title", "Director", "Writer"]}

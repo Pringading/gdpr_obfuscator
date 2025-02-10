@@ -166,7 +166,7 @@ class TestListToCSVStreamingObject:
         result = list_to_csv_streaming_object(test_data)
         reader = DictReader(result)
         assert list(reader) == test_data
-    
+
     @pytest.mark.it("Returns empty StringIO object if no data given")
     def test_no_data(self):
         result = list_to_csv_streaming_object([])
