@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
+coverage run --omit 'venv/*' -m pytest
 COVERAGE=$(coverage report --format=total)
+echo ${COVERAGE}
 badge="![Coverage Badge](https://img.shields.io/badge/coverage-"
 REGEX="!\[Coverage Badge\]\(https:\/\/img\.shields\.io\/badge\/coverage-[0-9]{1,3}%25-[a-z]{3,20}\)"
 
