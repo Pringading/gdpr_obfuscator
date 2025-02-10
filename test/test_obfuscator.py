@@ -110,6 +110,8 @@ class TestObfuscator:
 
     @pytest.mark.it('Throws NoFileToObfuscate error if field not provided')
     def test_throws_no_file_error(self):
+        """Tesing error raised if no file_to_obfuscate key in json input"""
+
         test_request = {"pii_fields": ["Title", "Director", "Writer"]}
         json_request = json.dumps(test_request)
         with pytest.raises(NoFileToObfuscate):
@@ -117,6 +119,8 @@ class TestObfuscator:
 
     @pytest.mark.it('Logs error if file_to_obfuscate not provided')
     def test_logs_no_file_error(self, caplog):
+        """Testing logs error if no file_to_obfuscate in json input"""
+
         expected_log = 'Unable to process. Please provide file_to_obfuscate'
         test_request = {"pii_fields": ["Title", "Director", "Writer"]}
         json_request = json.dumps(test_request)
@@ -127,6 +131,8 @@ class TestObfuscator:
 
     @pytest.mark.it('Logs error if pii_fields not provided')
     def test_logs_no_pii_error(self, caplog):
+        """Tesing logs error if no pii_fields key in json input"""
+
         expected_log = 'Unable to process. Please provide pii_fields'
         test_request = {"file_to_obfuscate": "s3://test-bucket/movies.csv"}
         json_request = json.dumps(test_request)

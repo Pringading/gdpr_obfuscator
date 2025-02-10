@@ -87,6 +87,8 @@ class TestObfuscateFields:
 
     @pytest.mark.it("Logs warning if given no data to obfuscate")
     def test_obfuscate_fields_empty_list(self, caplog):
+        """Test warning is logged if no data passed as an argument."""
+
         expected_log = 'No data found to obfuscate.'
         with caplog.at_level(logging.WARNING):
             obfuscate_fields([], [])
@@ -94,6 +96,8 @@ class TestObfuscateFields:
 
     @pytest.mark.it('Logs warning if given no fields to obfuscate')
     def test_obfuscate_fields_empty_fields(self, caplog):
+        """Test warning logged when fields list is empty."""
+
         expected_log = 'No fields found to obfuscate'
         test_list = [
             {"name": "name 1", "email": "1@email.com", "message": "hello"},
@@ -105,6 +109,9 @@ class TestObfuscateFields:
 
     @pytest.mark.it('Logs warning if none of the given fields found in data')
     def test_fields_not_found(self, caplog):
+        """Test warning is logged if fields do not exist as keys on given
+        data."""
+
         expected_log = 'No fields found to obfuscate'
         test_fields = ['address', 'course']
         test_list = [
@@ -117,6 +124,9 @@ class TestObfuscateFields:
 
     @pytest.mark.it('Logs warning if some fo the given fields missing in data')
     def test_logs_missing_fields(self, caplog):
+        """Tests warning is logged if any of the fields in field list are
+        not found in the given data."""
+
         expected_log = 'address, course fields not found in data.'
         test_fields = ['address', 'course', 'name']
         test_list = [
@@ -129,6 +139,8 @@ class TestObfuscateFields:
 
     @pytest.mark.it('Logs info about which fields have been obfuscated')
     def test_logs_info_about_obfuscated_fields(self, caplog):
+        """Testing logs info stating which fields have been obfuscated."""
+
         expected_log = 'name, email fields have been successfully obfuscated'
         test_fields = ['address', 'course', 'name', 'email']
         test_list = [
@@ -169,6 +181,8 @@ class TestListToCSVStreamingObject:
 
     @pytest.mark.it("Returns empty StringIO object if no data given")
     def test_no_data(self):
+        """Testing function can handle empty data as an input."""
+
         result = list_to_csv_streaming_object([])
         reader = DictReader(result)
         assert list(reader) == []
