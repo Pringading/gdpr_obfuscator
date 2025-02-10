@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="obfuscator",
-    version="0.1.0",
+    version="0.0.1",
     packages=["obfuscator"],
     install_requires=[
         'boto3==1.36.12',
