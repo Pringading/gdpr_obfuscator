@@ -65,7 +65,7 @@ remove-packages:
 	rm -r obfuscator.egg-info
 
 ## Create package
-create-package: dev-setup
+create-package:
 	$(call execute_in_env, python setup.py sdist bdist_wheel)
 
 
