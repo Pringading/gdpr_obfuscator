@@ -71,6 +71,9 @@ def list_to_csv_streaming_object(data: list[str]) -> StringIO:
     Returns: StringIO with data in csv format"""
 
     buffer = StringIO()
+    if not data:
+        return buffer
+    
     fieldnames = list(data[0].keys())
     writer = DictWriter(buffer, fieldnames=fieldnames)
     writer.writeheader()
