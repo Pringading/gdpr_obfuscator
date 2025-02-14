@@ -1,0 +1,14 @@
+README.md
+setup.py
+obfuscator/__init__.py
+obfuscator/csv_utils.py
+obfuscator/exceptions.py
+obfuscator/main.py
+obfuscator.egg-info/PKG-INFO
+obfuscator.egg-info/SOURCES.txt
+obfuscator.egg-info/dependency_links.txt
+obfuscator.egg-info/entry_points.txt
+obfuscator.egg-info/requires.txt
+obfuscator.egg-info/top_level.txt
+test/test_csv_utils.py
+test/test_obfuscator.py
