@@ -1,3 +1,6 @@
+"""Custom exceptions used by obfuscator"""
+
+
 class NoFileToObfuscate(Exception):
     """Traps error when file_to_obfuscate is not provided."""
     pass

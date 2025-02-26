@@ -1,3 +1,5 @@
+"""Fixtures for use in tests."""
+
 import pytest
 from moto import mock_aws
 import boto3

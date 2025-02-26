@@ -1,1 +1,1 @@
-from .main import hello, obfuscator
+from .main import obfuscator

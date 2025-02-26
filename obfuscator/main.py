@@ -1,3 +1,6 @@
+"""obfuscator function and helper functions that can be used for any file type.
+"""
+
 import boto3
 import json
 import logging
@@ -16,10 +19,6 @@ from .exceptions import (
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-
-
-def hello():
-    print("hello!")
 
 
 def obfuscator(json_str: str) -> BytesIO:

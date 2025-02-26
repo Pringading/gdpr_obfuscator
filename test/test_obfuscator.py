@@ -1,3 +1,5 @@
+"""Testing functions in obfuscator/main.py"""
+
 import pytest
 import boto3
 import json

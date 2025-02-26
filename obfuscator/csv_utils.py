@@ -1,3 +1,5 @@
+"""Helper functions used by obfuscator for parsing csv files"""
+
 import logging
 from io import StringIO
 from csv import DictReader, DictWriter
