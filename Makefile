@@ -67,5 +67,3 @@ remove-packages:
 ## Create package
 create-package:
 	$(call execute_in_env, python setup.py sdist bdist_wheel)
-
-

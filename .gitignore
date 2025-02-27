@@ -5,3 +5,5 @@ venv*
 .coverage
 *.DS_Store
 notes.txt
+build
+obfuscator.egg-info
