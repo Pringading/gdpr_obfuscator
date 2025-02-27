@@ -12,10 +12,5 @@ setup(
         's3transfer==0.11.2',
         'six==1.17.0',
         'urllib3==2.3.0',
-    ],
-    entry_points={
-        "console_scripts" :[
-            "obfuscator_hello = obfuscator.main:hello",
-        ]
-    }
+    ]
 )
