@@ -1,7 +1,7 @@
 # gdpr_obfuscator
 
 [![gdpr-obfuscator](https://github.com/Pringading/gdpr_obfuscator/actions/workflows/checks.yml/badge.svg)](https://github.com/Pringading/gdpr_obfuscator/actions/workflows/checks.yml)
-![Coverage Badge](https://img.shields.io/badge/coverage-99%25-forestgreen)
+![Coverage Badge](https://img.shields.io/badge/coverage-100%25-forestgreen)
 ![version](https://img.shields.io/badge/version-0.0.1-blue)
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
@@ -22,7 +22,7 @@ A general-purpose tool to process data being ingested to AWS and intercept perso
 The package can be installed by running the following code in the terminal:
 
 ```bash
-$ pip install <path to repo>/gdpr_obfuscator/dist/obfuscator-0.0.1-py3-none-any.whl
+$ pip install <path to repo>/gdpr_obfuscator/dist/obfuscator-0.1.0-py3-none-any.whl
 ```
 .
 
