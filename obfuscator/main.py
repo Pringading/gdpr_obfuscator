@@ -75,8 +75,8 @@ def get_bucket_and_key_from_string(filename: str) -> tuple[str]:
         filename (str): address of file in S3 bucket
         eg. 's3://my_ingestion_bucket/new_data/file1.csv'
 
-    Returns: bucket name and key name as a tuple.
-        eg. 'my_ingestion_bucket', 'new_data/file1.csv'"""
+    Returns: bucket name, key name and extension as a tuple.
+        eg. ('my_ingestion_bucket', 'new_data/file1.csv', 'csv')"""
 
     # raise error if not s3 location
     if filename[:5] != 's3://':

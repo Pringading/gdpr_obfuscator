@@ -19,12 +19,24 @@ A general-purpose tool to process data being ingested to AWS and intercept perso
 
 
 ## Installation
-The package can be installed by running the following code in the terminal:
+The package can be installed by forking the repo & making a clone on your local machine.
 
 ```bash
-$ pip install <path to repo>/gdpr_obfuscator/dist/obfuscator-0.1.0-py3-none-any.whl
+$ git clone <path to fork>
 ```
-.
+
+You can then install the obfuscator library in the global environment using the following command in the terminal:
+
+```bash
+$ pip install gdpr_obfuscator/dist/obfuscator-0.1.0-py3-none-any.whl
+```
+
+You can also install the library in a virtual environment by activating your virtual environment and then providing the path to the cloned repo on your local machine.
+
+```bash
+$ pip install <local path to clone>/gdpr_obfuscator/dist/obfuscator-0.1.0-py3-none-any.whl
+```
+
 
 ## Execution / Usage
 
@@ -40,7 +52,7 @@ Example input:
 
 After installing, the function can be imported into a python project and called with a JSON string.
 
-The function returns a byte object that can be added to an aws bucket using the put-object aws api call.
+The function returns a byte object that can be saved as a new file in aws bucket using the put-object aws s3 api call.
 
 Example Usage:
 ```py
