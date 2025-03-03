@@ -1,4 +1,4 @@
-# gdpr_obfuscator
+# GDPR Obfuscator
 
 [![gdpr-obfuscator](https://github.com/Pringading/gdpr_obfuscator/actions/workflows/checks.yml/badge.svg)](https://github.com/Pringading/gdpr_obfuscator/actions/workflows/checks.yml)
 ![Coverage Badge](https://img.shields.io/badge/coverage-100%25-forestgreen)
@@ -22,7 +22,7 @@ A general-purpose tool to process data being ingested to AWS and intercept perso
 The package can be installed by forking the repo & making a clone on your local machine.
 
 ```bash
-$ git clone <path to fork>
+$ git clone <url of fork>
 ```
 
 You can then install the obfuscator library in the global environment using the following command in the terminal:
